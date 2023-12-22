@@ -1,5 +1,5 @@
 const express =require("express")
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const cors=require("cors")
 const port=process.env.port || 5000
 const app=express()
@@ -83,6 +83,39 @@ app.post("/getAllTaskByEmail",async(req,res)=>{
     const query={email:email}
     const result=await taskCollection.find(query).toArray()
     res.send(result)
+})
+// update a task paramitre.
+app.post("/updateATask",async(req,res)=>{
+  const id=req.body.id
+  const data=req.body.data
+  const newData={
+    $set:{
+      status:data
+    }
+  }
+  const query={_id:new ObjectId(id)}
+  const result=await taskCollection.updateOne(query,newData)
+  res.send(result)
+})
+// delete a task.
+app.post("/deleteATask",async(req,res)=>{
+  const id=req.body.id
+  const query={_id:new ObjectId(id)}
+  const result=await taskCollection.deleteOne(query)
+  res.send(result)
+})
+// update a task.
+app.post("/updateATaskMultipleField" ,async(req,res)=>{
+  const {id,title,description,date,time,status,priority}=req.body
+  const query={_id:new ObjectId(id)}
+  const newdata={
+    $set:{
+      title,description,date,time,status,priority
+    }
+  }
+  
+  const result=await taskCollection.updateOne(query,newdata)
+  res.send(result)
 })
 
  
