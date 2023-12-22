@@ -81,13 +81,13 @@ app.get("/getAllTask",async(req,res)=>{
 app.post("/getAllTaskByEmail",async(req,res)=>{
     const email=req.body.email
     const query={email:email}
-    const result=await taskCollection.find(query).toArray
+    const result=await taskCollection.find(query).toArray()
     res.send(result)
 })
 
-
+ 
 // all api list end..................................
-
+ 
 
     await client.connect();
     // Send a ping to confirm a successful connection
